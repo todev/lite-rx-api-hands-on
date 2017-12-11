@@ -18,8 +18,12 @@ package io.pivotal.literx;
 
 import java.util.function.Supplier;
 
+import org.assertj.core.api.Assertions;
+
 import io.pivotal.literx.domain.User;
+import junit.framework.Assert;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 /**
  * Learn how to use StepVerifier to test Mono, Flux or any other kind of Reactive Streams Publisher.
@@ -33,13 +37,14 @@ public class Part03StepVerifier {
 
 	// TODO Use StepVerifier to check that the flux parameter emits "foo" and "bar" elements then completes successfully.
 	void expectFooBarComplete(Flux<String> flux) {
-		fail();
+		StepVerifier.create(flux).expectNext("foo", "bar").verifyComplete();
 	}
 
 //========================================================================================
 
 	// TODO Use StepVerifier to check that the flux parameter emits "foo" and "bar" elements then a RuntimeException error.
 	void expectFooBarError(Flux<String> flux) {
+		StepVerifier.create(flux).expectNext("foo", "bar").verifyError(RuntimeException.class);
 		fail();
 	}
 
@@ -48,7 +53,11 @@ public class Part03StepVerifier {
 	// TODO Use StepVerifier to check that the flux parameter emits a User with "swhite"username
 	// and another one with "jpinkman" then completes successfully.
 	void expectSkylerJesseComplete(Flux<User> flux) {
-		fail();
+		StepVerifier.create(flux.map(user -> user.getUsername())).expectNext("swhite", "jpinkman").verifyComplete();
+		//StepVerifier.create(flux).expectNextMatches(user -> Assertions.assertThat(user.getUsername()).isEqualTo("swhite"));
+		//StepVerifier.create(flux).expectNextMatches(user -> {
+		//	Assertions.assertThat(user -> user.getUsername())
+		//});
 	}
 
 //========================================================================================
