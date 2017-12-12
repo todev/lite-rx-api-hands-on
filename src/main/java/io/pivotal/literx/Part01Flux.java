@@ -46,6 +46,7 @@ public class Part01Flux {
 		// TODO Create a Flux that emits increasing values from 0 to 9 each 100ms
 	Flux<Long> counter() {
 		return Flux.from(Flux.range(0, 10).delayElements(Duration.ofMillis(100L)).map(i -> Long.valueOf(i)));
+		//= return Flux.interval(Duration.ofMillis(100)).take(10);  // TO BE REMOVED
 	}
 
 }
